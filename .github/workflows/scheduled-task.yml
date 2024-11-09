@@ -2,8 +2,9 @@ name: "Scheduled File Creation and Push"
 
 on:
   schedule:
+    # Schedule times: 8 AM, 11 AM, 2 PM, 5 PM, and 8 PM UTC
     - cron: "0 8,11,14,17,20 * * *"
-  workflow_dispatch: 
+  workflow_dispatch:  # Allows manual trigger
 
 jobs:
   run-automation:
@@ -26,8 +27,8 @@ jobs:
 
       - name: Commit and Push Changes
         run: |
-          git config --global user.name imankii01
-          git config --global user.email private.ankit047@gmail.com
+          git config --global user.name "your-github-username"
+          git config --global user.email "your-email@example.com"
           git add .
           git commit -m "Automated commit with random content"
           git push
