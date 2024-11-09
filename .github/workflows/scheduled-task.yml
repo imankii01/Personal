@@ -29,7 +29,7 @@ jobs:
         run: |
           git config --global user.name imankii01
           git config --global user.email private.ankit047@gmail.com
-          git pull
+          git pull origin main
           git add .
           git commit -m "Automated commit with random content"
           git push origin main 
