@@ -56,7 +56,7 @@ const commitAndPushChanges = async () => {
 };
 
 // Schedule task to run every 20 seconds
-cron.schedule("*/60 * * * * *", async () => {
+cron.schedule("*/160 * * * * *", async () => {
     console.log("Scheduled task started");
 
     // Create a single file (or adjust if multiple files are desired)
@@ -66,4 +66,4 @@ cron.schedule("*/60 * * * * *", async () => {
     await commitAndPushChanges();
 });
 
-console.log("Automation script is running every 60 seconds.");
+console.log("Automation script is running every 160 seconds.");
