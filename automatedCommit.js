@@ -55,7 +55,7 @@ const commitAndPushChanges = async () => {
     }
 };
 
-// Schedule task to run every 10 seconds
+// Schedule task to run every 20 seconds
 cron.schedule("*/20 * * * * *", async () => {
     console.log("Scheduled task started");
 
