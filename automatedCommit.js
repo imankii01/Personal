@@ -4,8 +4,17 @@ const path = require("path");
 const simpleGit = require("simple-git");
 
 // Git config
-const git = simpleGit();
 const repoPath = "./"; // Set to root directory of the local Git repository
+const git = simpleGit({
+    baseDir: repoPath,
+    binary: "git", 
+    maxConcurrentProcesses: 6,
+    config: [
+        "core.autocrlf=input", // Optional: For handling line endings
+        "user.name=Your GitHub Username", // Set your GitHub username
+        "user.email=Your GitHub Email"  // Set your GitHub email
+    ]
+});
 const commitMessage = "Automated commit with random content";
 
 // Utility function to generate random content
