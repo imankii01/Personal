@@ -34,18 +34,27 @@ const createRandomFile = () => {
   return fileName;
 };
 
-// Function to commit and push changes
 const commitAndPushChanges = async () => {
   try {
+    console.log("Checking for existing lock...");
+    if (fs.existsSync(path.join(repoPath, ".git", "index.lock"))) {
+      console.log("Git is locked, retrying in 5 seconds...");
+      setTimeout(commitAndPushChanges, 5000);
+      return;
+    }
+
     console.log("Staging files...");
     await git.add("./*");
-
     console.log("Committing changes...");
     await git.commit(commitMessage);
-
+    console.log("Pulling latest changes from remote...");
+    
+    // Pull changes from the remote repository to sync local and remote branches
+    await git.pull("origin", "main");
+    console.log("Pulled latest changes from remote.");
+    
     console.log("Pushing to repository...");
     await git.push("origin", "main");
-
     console.log("Changes committed and pushed.");
   } catch (error) {
     console.error("Error during commit and push:", error);
