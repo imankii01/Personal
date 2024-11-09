@@ -1,12 +1,9 @@
-# .github/workflows/scheduled-task.yml
-
 name: "Scheduled File Creation and Push"
 
 on:
   schedule:
-    # Schedule times: 8 AM, 11 AM, 2 PM, 5 PM, and 8 PM UTC
     - cron: "0 8,11,14,17,20 * * *"
-  workflow_dispatch:  # Allows manual trigger from GitHub UI
+  workflow_dispatch: 
 
 jobs:
   run-automation:
@@ -19,7 +16,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: "16"  # Use the required Node.js version
+          node-version: "16"
 
       - name: Install dependencies
         run: npm install
