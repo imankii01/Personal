@@ -1,0 +1,16 @@
+{
+  "name": "automated-github-push",
+  "version": "1.0.0",
+  "main": "automatedCommit.js",
+  "scripts": {
+    "start": "nodemon automatedCommit.js"
+  },
+  "dependencies": {
+    "node-cron": "^3.0.0",
+    "simple-git": "^3.0.0",
+    "fs-extra": "^10.0.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.0"
+  }
+}
