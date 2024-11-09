@@ -3,10 +3,12 @@ const fs = require("fs-extra");
 const path = require("path");
 const simpleGit = require("simple-git");
 
+// Git config
 const git = simpleGit();
-const repoPath = "./";
+const repoPath = "./"; // Set to root directory of the local Git repository
 const commitMessage = "Automated commit with random content";
 
+// Utility function to generate random content
 const generateRandomContent = () => {
     const lines = [
         "console.log('Hello World!');",
@@ -19,6 +21,7 @@ const generateRandomContent = () => {
     return lines[Math.floor(Math.random() * lines.length)];
 };
 
+// Function to create a new file with random content
 const createRandomFile = () => {
     const fileName = `file_${Date.now()}.js`;
     const filePath = path.join(repoPath, fileName);
@@ -28,26 +31,40 @@ const createRandomFile = () => {
     return fileName;
 };
 
+// Function to commit and push changes
 const commitAndPushChanges = async () => {
     try {
+        console.log("Starting to add files...");
+
+        // Stage all files in the repository
         await git.add("./*");
+        console.log("Files successfully staged.");
+
+        // Commit the staged changes
+        console.log("Starting commit...");
         await git.commit(commitMessage);
-        await git.push("origin", "main");
-        console.log("Changes committed and pushed.");
+        console.log("Commit successful.");
+
+        // Push the committed changes to the remote repository
+        console.log("Starting push to remote repository...");
+        await git.push("origin", "main"); // Replace 'main' with the correct branch name if needed
+        console.log("Push successful. Changes committed and pushed to GitHub.");
+
     } catch (err) {
-        console.error("Error committing or pushing changes:", err);
+        console.error("Error during commit and push process:", err);
     }
 };
 
-cron.schedule("0 9 * * *", async () => {
-    console.log("Daily task started");
 
-    const fileCount = Math.floor(Math.random() * 2) + 3;
-    for (let i = 0; i < fileCount; i++) {
-        createRandomFile();
-    }
+// Schedule task to run every 10 seconds
+cron.schedule("*/10 * * * * *", async () => {
+    console.log("Scheduled task started");
 
+    // Create a single file (or adjust if multiple files are desired)
+    createRandomFile();
+
+    // Commit and push changes
     await commitAndPushChanges();
 });
 
-console.log("Automation script is running.");
+console.log("Automation script is running every 10 seconds.");
