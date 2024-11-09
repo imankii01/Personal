@@ -4,17 +4,8 @@ const path = require("path");
 const simpleGit = require("simple-git");
 
 // Git config
+const git = simpleGit();
 const repoPath = "./"; // Set to root directory of the local Git repository
-const git = simpleGit({
-    baseDir: repoPath,
-    binary: "git", 
-    maxConcurrentProcesses: 6,
-    config: [
-        "core.autocrlf=input", // Optional: For handling line endings
-        "user.name=Your GitHub Username", // Set your GitHub username
-        "user.email=Your GitHub Email"  // Set your GitHub email
-    ]
-});
 const commitMessage = "Automated commit with random content";
 
 // Utility function to generate random content
@@ -65,7 +56,7 @@ const commitAndPushChanges = async () => {
 };
 
 // Schedule task to run every 10 seconds
-cron.schedule("*/10 * * * * *", async () => {
+cron.schedule("*/20 * * * * *", async () => {
     console.log("Scheduled task started");
 
     // Create a single file (or adjust if multiple files are desired)
@@ -75,4 +66,4 @@ cron.schedule("*/10 * * * * *", async () => {
     await commitAndPushChanges();
 });
 
-console.log("Automation script is running every 10 seconds.");
+console.log("Automation script is running every 20 seconds.");
