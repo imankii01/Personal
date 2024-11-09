@@ -1,1 +1,0 @@
-let today = new Date();
