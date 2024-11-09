@@ -31,9 +31,20 @@ const createRandomFile = () => {
     return fileName;
 };
 
+const isGitLocked = () => {
+    return fs.existsSync(path.join(repoPath, '.git', 'index.lock'));
+};
+
 // Enhanced function to commit and push changes
 const commitAndPushChanges = async () => {
     try {
+        // Check if Git is locked
+        if (isGitLocked()) {
+            console.log("Git is locked, retrying after 5 seconds...");
+            setTimeout(commitAndPushChanges, 5000); // Retry after 5 seconds
+            return;
+        }
+
         console.log("Starting to add files...");
 
         // Stage all files in the repository
@@ -49,7 +60,7 @@ const commitAndPushChanges = async () => {
         console.log("Starting push to remote repository...");
         await git.push("origin", "main"); // Replace 'main' with the correct branch name if needed
         console.log("Push successful. Changes committed and pushed to GitHub.");
-
+        
     } catch (err) {
         console.error("Error during commit and push process:", err);
     }
