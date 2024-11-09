@@ -31,6 +31,4 @@ jobs:
           git config --global user.email "private.ankit047@gmail.com"  # Your GitHub email
           git add .
           git commit -m "Automated commit with random content"
-          git push 
-        env:
-          GH_TOKEN: ${{ secrets.GH_TOKEN }}  # Reference to your stored token
+          git push origin main  # Push without token (using public repo)
