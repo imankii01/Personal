@@ -1,4 +1,3 @@
-// automatedCommit.js
 const fs = require("fs-extra");
 const path = require("path");
 const simpleGit = require("simple-git");
@@ -6,7 +5,6 @@ const git = simpleGit();
 const repoPath = "./";
 const commitMessage = "Automated commit with random content";
 
-// Generate random content for the file
 const generateRandomContent = () => {
   const lines = [
     "console.log('Hello World!');",
@@ -19,7 +17,6 @@ const generateRandomContent = () => {
   return lines[Math.floor(Math.random() * lines.length)];
 };
 
-// Create a new file with random content
 const createRandomFile = () => {
   const fileName = `file_${Date.now()}.js`;
   const filePath = path.join(repoPath, fileName);
@@ -29,7 +26,6 @@ const createRandomFile = () => {
   return fileName;
 };
 
-// Commit and push changes to GitHub
 const commitAndPushChanges = async () => {
   try {
     console.log("Checking for existing lock...");
@@ -51,7 +47,6 @@ const commitAndPushChanges = async () => {
   }
 };
 
-// Run the tasks
 (async () => {
   console.log("Running scheduled automation script.");
   createRandomFile();
