@@ -1,0 +1,38 @@
+# .github/workflows/scheduled-task.yml
+
+name: "Scheduled File Creation and Push"
+
+on:
+  schedule:
+    # Schedule times: 8 AM, 11 AM, 2 PM, 5 PM, and 8 PM UTC
+    - cron: "0 8,11,14,17,20 * * *"
+  workflow_dispatch:  # Allows manual trigger from GitHub UI
+
+jobs:
+  run-automation:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: "16"  # Use the required Node.js version
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run the automation script
+        run: node automatedCommit.js
+
+      - name: Commit and Push Changes
+        run: |
+          git config --global user.name "your-github-username"
+          git config --global user.email "your-email@example.com"
+          git add .
+          git commit -m "Automated commit with random content"
+          git push
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
