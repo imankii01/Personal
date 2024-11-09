@@ -31,7 +31,7 @@ const createRandomFile = () => {
     return fileName;
 };
 
-// Function to commit and push changes
+// Enhanced function to commit and push changes
 const commitAndPushChanges = async () => {
     try {
         console.log("Starting to add files...");
@@ -54,7 +54,6 @@ const commitAndPushChanges = async () => {
         console.error("Error during commit and push process:", err);
     }
 };
-
 
 // Schedule task to run every 10 seconds
 cron.schedule("*/10 * * * * *", async () => {
