@@ -12,12 +12,12 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3  # Updated from v2 to v3
 
       - name: Set up Node.js
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3  # Updated from v2 to v3
         with:
-          node-version: "16"
+          node-version: "20"  # Specify the latest Node.js version to use
 
       - name: Install dependencies
         run: npm install
@@ -27,8 +27,8 @@ jobs:
 
       - name: Commit and Push Changes
         run: |
-          git config --global user.name imankii01
-          git config --global user.email private.ankit047@gmail.com 
+          git config --global user.name "imankii01"  # Your GitHub username
+          git config --global user.email "private.ankit047@gmail.com"  # Your GitHub email
           git add .
           git commit -m "Automated commit with random content"
           git push
