@@ -1,14 +1,12 @@
+const cron = require("node-cron");
 const fs = require("fs-extra");
 const path = require("path");
 const simpleGit = require("simple-git");
 
-// Git and repository configuration
 const git = simpleGit();
-const repoPath = path.resolve(__dirname); // Ensure it points to the repo root
+const repoPath = "./";
 const commitMessage = "Automated commit with random content";
-const targetDir = path.join(repoPath, "file"); // Directory where files are created
 
-// Utility function to generate random content
 const generateRandomContent = () => {
   const lines = [
     "console.log('Hello World!');",
@@ -21,62 +19,76 @@ const generateRandomContent = () => {
   return lines[Math.floor(Math.random() * lines.length)];
 };
 
-// Ensure target directory exists
-fs.ensureDirSync(targetDir);
-
-// Function to create a new file with random content
 const createRandomFile = () => {
   const fileName = `file_${Date.now()}.js`;
-  const filePath = path.join(targetDir, fileName);
+  const filePath = path.join(repoPath, fileName);
   const content = generateRandomContent();
   fs.writeFileSync(filePath, content);
   console.log(`File created: ${fileName}`);
   return fileName;
 };
 
+const isGitLocked = () => {
+  return fs.existsSync(path.join(repoPath, ".git", "index.lock"));
+};
+
 const commitAndPushChanges = async () => {
   try {
-    console.log("Checking for existing lock...");
-    if (fs.existsSync(path.join(repoPath, ".git", "index.lock"))) {
-      console.log("Git is locked, retrying in 5 seconds...");
+    if (isGitLocked()) {
+      console.log("Git is locked, retrying after 5 seconds...");
       setTimeout(commitAndPushChanges, 5000);
       return;
     }
 
-    console.log("Staging files...");
+    console.log("Starting to add files...");
+
     await git.add("./*");
-    console.log("Committing changes...");
+    console.log("Files successfully staged.");
+    console.log("Starting commit...");
     await git.commit(commitMessage);
-    console.log("Pulling latest changes from remote...");
-    
-    // Pull changes from the remote repository to sync local and remote branches
-    await git.pull("origin", "main");
-    console.log("Pulled latest changes from remote.");
-    
-    console.log("Pushing to repository...");
+    console.log("Commit successful.");
+
+    console.log("Starting push to remote repository...");
     await git.push("origin", "main");
-    console.log("Changes committed and pushed.");
-  } catch (error) {
-    console.error("Error during commit and push:", error);
+    console.log("Push successful. Changes committed and pushed to GitHub.");
+  } catch (err) {
+    console.error("Error during commit and push process:", err);
   }
 };
 
-// Main function to create a file, commit, and push
-(async () => {
-  try {
-    // Check for .git/index.lock file to prevent git locking conflicts
-    const lockFilePath = path.join(repoPath, ".git", "index.lock");
-    if (fs.existsSync(lockFilePath)) {
-      console.log("Git is locked, retrying in 5 seconds...");
-      setTimeout(async () => {
-        await commitAndPushChanges();
-      }, 5000);
-    } else {
-      console.log("Running scheduled automation script.");
-      createRandomFile();
-      await commitAndPushChanges();
-    }
-  } catch (error) {
-    console.error("An error occurred in the main function:", error);
-  }
-})();
+cron.schedule("0 8 * * *", async () => {
+  console.log("Scheduled task started at 8 AM");
+  createRandomFile();
+  await commitAndPushChanges();
+});
+
+cron.schedule("0 11 * * *", async () => {
+  console.log("Scheduled task started at 11 AM");
+  createRandomFile();
+  await commitAndPushChanges();
+});
+
+cron.schedule("0 14 * * *", async () => {
+  console.log("Scheduled task started at 2 PM");
+  createRandomFile();
+  await commitAndPushChanges();
+});
+
+// Schedule at 5 PM
+cron.schedule("0 17 * * *", async () => {
+  console.log("Scheduled task started at 5 PM");
+  createRandomFile();
+  await commitAndPushChanges();
+});
+
+cron.schedule("0 20 * * *", async () => {
+  console.log("Scheduled task started at 8 PM");
+  createRandomFile();
+  await commitAndPushChanges();
+});
+
+console.log(
+  "Scheduled task set to run 5 times a day at 8 AM, 11 AM, 2 PM, 5 PM, and 8 PM."
+);
+
+console.log("Automation script is running every 160 seconds.");
